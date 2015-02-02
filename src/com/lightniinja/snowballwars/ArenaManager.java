@@ -47,23 +47,23 @@ public class ArenaManager {
 	public void addPlayer(Player p, int i) {
 		Arena a = getArena(i);
 		if(a == null) {
-			p.sendMessage(ChatColor.RED + "Arena not found! (You shouldn't be seeing this!)");
+			p.sendMessage(ChatColor.RED + "Arena no encontrada.");
 			return;
 		}
 		if(a.getPlayers().size() > 8) {
-			p.sendMessage(ChatColor.RED + "Arena is full! Try joining a different one!");
+			p.sendMessage(ChatColor.RED + "Arena llena.");
 			return;
 		}
 		if(a.getState() != 0) {
-			p.sendMessage(ChatColor.RED + "Arena has already started!");
+			p.sendMessage(ChatColor.RED + "Juego iniciado.");
 			return;
 		}
 		if(a.getPlayers().contains(p.getName())) {
 			return;
 		}
-		p.sendMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.GRAY + "] " + p.getName() + " has joined the arena!");
+		p.sendMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.GRAY + "] " + p.getName() + " Se unio al juego.");
 		for(String str: a.getPlayers()) {
-			Bukkit.getPlayerExact(str).sendMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.GRAY + "] " + p.getName() + " has joined the arena!");
+			Bukkit.getPlayerExact(str).sendMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.GRAY + "] " + p.getName() + " Se unio al juego.");
 		}
 		inventory.put(p.getName(), p.getInventory().getContents());
 		armor.put(p.getName(), p.getInventory().getArmorContents());
@@ -78,12 +78,12 @@ public class ArenaManager {
 		p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, SBWPlugin.snowballs));
 		ItemStack item = new ItemStack(Material.PAPER, 1);
 		ItemMeta m = item.getItemMeta();
-		m.setDisplayName(ChatColor.YELLOW + "Leave Arena");
+		m.setDisplayName(ChatColor.YELLOW + "Salir de la arena");
 		List<String> lore = new ArrayList<String>();
-		lore.add(ChatColor.GREEN + "Right click to leave arena!");
+		lore.add(ChatColor.GREEN + "Click derecho para salir.");
 		item.setItemMeta(m);
 		p.getInventory().setItem(8, item);
-		p.setScoreboard(a.getSBApi().getBoard("arena" + a.getId()));
+		p.setScoreboard(a.getSBApi().getBoard("Arena:" + a.getId()));
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -91,7 +91,7 @@ public class ArenaManager {
 		if(getArena(p) == null)
 			return;
 		if(getArena(p).getState() == 1) {	
-			Objective o = getArena(p).getSBApi().getObjective("gameTimer", getArena(p).getSBApi().getBoard("arena" + getArena(p).getId()));
+			Objective o = getArena(p).getSBApi().getObjective("Tiempo:", getArena(p).getSBApi().getBoard("Arena" + getArena(p).getId()));
 			Score s = o.getScore(Bukkit.getOfflinePlayer(p.getName()));
 			s.setScore(-1);
 		}
@@ -108,9 +108,9 @@ public class ArenaManager {
 		armor.remove(p.getName());
 		p.teleport(locs.get(p.getName()));
 		locs.remove(p.getName());
-		p.sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "-" + ChatColor.GRAY + "] " + p.getName() + " has left the arena!");
+		p.sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "-" + ChatColor.GRAY + "] " + p.getName() + " Salio del juego.");
 		for(String str: a.getPlayers()) {
-			Bukkit.getPlayerExact(str).sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "-" + ChatColor.GRAY + "] " + p.getName() + " has left the arena!");
+			Bukkit.getPlayerExact(str).sendMessage(ChatColor.GRAY + "[" + ChatColor.RED + "-" + ChatColor.GRAY + "] " + p.getName() + " Salio del juego.");
 		}
 	}
 
